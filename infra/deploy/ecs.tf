@@ -174,12 +174,12 @@ resource "aws_security_group" "ecs_service" {
     ]
   }
 
-  # HTTP inbound access
+  # only accepts inbound access via lb sec group
   ingress {
     from_port   = 8000
     to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.lb.id]
   }
 }
 
