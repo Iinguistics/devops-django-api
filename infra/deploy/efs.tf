@@ -25,3 +25,17 @@ resource "aws_security_group" "efs" {
     ]
   }
 }
+
+# ecs can be running in prv a and b
+# ensures mount targets are available in both so ECS can connect
+resource "aws_efs_mount_target" "media_a" {
+  file_system_id  = aws_efs_file_system.media.id
+  subnet_id       = aws_subnet.private_a.id
+  security_groups = [aws_security_group.efs.id]
+}
+
+resource "aws_efs_mount_target" "media_b" {
+  file_system_id  = aws_efs_file_system.media.id
+  subnet_id       = aws_subnet.private_b.id
+  security_groups = [aws_security_group.efs.id]
+}
